@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Shelf.API.Data;
+using Shelf.Core.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -28,10 +29,10 @@ app.UseSwaggerUI();
 //app.MapPut("/", () => "Hello World!");
 //app.MapDelete("/", () => "Hello World!");
  
-app.MapPost("/v1/transactions", 
+app.MapPost("/v1/categories",
         (Request request, Handler handler) =>  handler.Handle(request))
-    .WithName("Transactions: Create")
-    .WithSummary("Cria uma nova transação")
+    .WithName("Categories: Create")
+    .WithSummary("Cria uma nova categoria")
     .Produces<Response>();
 
 app.Run();
@@ -39,11 +40,8 @@ app.Run();
 public class Request 
 {
     public string Title { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public int Type { get; set; } 
-    public decimal Amount { get; set; }
-    public long CategoryID { get; set; }
-    public string UserID { get; set; } = string.Empty;
+ 
+    public string Description { get; set; } = string.Empty;
     
 }
 
@@ -53,14 +51,23 @@ public class Response
     public string Title { get; set; }  = string.Empty;
 }
 
-public class Handler
+public class Handler(AppDbContext context)
 {
     public Response Handle(Request request)
     {
+        var category = new Category
+        {
+            Title = request.Title,
+            Description = request.Description
+        };
+
+        context.Categories.Add(category);
+        context.SaveChanges();
+
         return new Response
         {       
-            ID = 4,
-            Title = request.Title    
+            ID = category.ID,
+            Title = category.Title    
         };
     }
 }
