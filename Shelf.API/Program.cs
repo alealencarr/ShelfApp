@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Shelf.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>
@@ -7,6 +10,10 @@ builder.Services.AddSwaggerGen(x =>
 //Podemos ter Request em todos os projetos, isso causaria uma dificuldade para o Dev entender de qual Request se trata
 //Ao adicionar as funções anonimas e colocar para que o tipo seja n.FullName ele retornará, ex:
 // Shelf.Shelf.API.Request pois pode ter Shelf.Shelf.Core.Request
+
+var cnnStr = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
+
+builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); }); 
 
 builder.Services.AddSwaggerGen(setupAction => { setupAction.CustomSchemaIds(n => n.FullName); });
 
