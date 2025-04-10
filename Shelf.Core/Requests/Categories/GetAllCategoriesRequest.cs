@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shelf.Core.Requests
+namespace Shelf.Core.Requests.Categories
 {
-    public abstract class Request
+    public class GetAllCategoriesRequest : PagedRequest
     {
-        public string UserId { get; set; } = string.Empty;
+
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shelf.Core.Responses
 {
-    public class PagedResponse<TData> : ResponseRoot<TData>
+    public class PagedResponse<TData> : Response<TData>
     {
         [JsonConstructor]
         public PagedResponse(TData? data,int totalCount, int currentPage = 1, int pageSize = Configuration.DefaultPageSize) :
@@ -23,6 +23,7 @@ namespace Shelf.Core.Responses
             base(data, code, message)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
+
         }
         public int TotalCount { get; set; }
         public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);

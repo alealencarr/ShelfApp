@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Shelf.Core.Responses
 {
-    public class ResponseRoot<TData>
+    public class Response<TData>
     {
        
         private readonly int _code;
 
         [JsonConstructor]
-        public ResponseRoot()
+        public Response()
              => 
             _code = (int)Configuration.HTTP_STATUS_CODE_DEFAULT;
         
-        public ResponseRoot(TData? data, int code = (int)Configuration.HTTP_STATUS_CODE_DEFAULT, string? message = null)
+        public Response(TData? data, int code = (int)Configuration.HTTP_STATUS_CODE_DEFAULT, string? message = null)
         { 
             _code = code;
             Data = data;

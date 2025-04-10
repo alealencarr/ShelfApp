@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Shelf.API.Data;
+using Shelf.API.Handlers;
+using Shelf.Core.Handlers;
 using Shelf.Core.Models;
+using Shelf.Core.Requests.Categories;
+using Shelf.Core.Responses;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -18,7 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(x => { x.UseSqlServer(cnnStr); });
 
 builder.Services.AddSwaggerGen(setupAction => { setupAction.CustomSchemaIds(n => n.FullName); });
 
-builder.Services.AddTransient<Handler>();
+builder.Services.AddTransient<ICategoryHandler, CategoryHandler>();
     
 var app = builder.Build();
 
@@ -30,45 +34,13 @@ app.UseSwaggerUI();
 //app.MapDelete("/", () => "Hello World!");
  
 app.MapPost("/v1/categories",
-        (Request request, Handler handler) =>  handler.Handle(request))
+        (CreateCategoryRequest request, ICategoryHandler handler) =>  
+        handler.CreateAsync(request))
     .WithName("Categories: Create")
     .WithSummary("Cria uma nova categoria")
-    .Produces<Response>();
+    .Produces<Response<Category>>();
 
 app.Run();
 
-public class Request 
-{
-    public string Title { get; set; } = string.Empty;
  
-    public string Description { get; set; } = string.Empty;
-    
-}
-
-public class Response
-{
-    public long  ID { get; set; }
-    public string Title { get; set; }  = string.Empty;
-}
-
-public class Handler(AppDbContext context)
-{
-    public Response Handle(Request request)
-    {
-        var category = new Category
-        {
-            Title = request.Title,
-            Description = request.Description
-        };
-
-        context.Categories.Add(category);
-        context.SaveChanges();
-
-        return new Response
-        {       
-            ID = category.ID,
-            Title = category.Title    
-        };
-    }
-}
  
