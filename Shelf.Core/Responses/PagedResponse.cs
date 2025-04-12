@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Shelf.Core.Responses
             PageSize = pageSize;
         }
 
-        public PagedResponse(TData? data, int code = (int)Configuration.HTTP_STATUS_CODE_DEFAULT, string? message = null) :
+        public PagedResponse(TData? data, HttpStatusCode code =  Configuration.HTTP_STATUS_CODE_DEFAULT, string? message = null) :
             base(data, code, message)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();

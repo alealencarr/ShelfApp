@@ -9,6 +9,8 @@ namespace Shelf.Core.Requests.Categories
 {
     public class UpdateCategoryRequest : Request
     {
+        public long ID;
+
         [Required(ErrorMessage = "Titulo inválido.")]
         [MaxLength(80, ErrorMessage = "O titulo deve conter, no máximo, 80 caracteres.")]
         public string Title { get; set;} = string.Empty;

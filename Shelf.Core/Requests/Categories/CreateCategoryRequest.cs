@@ -12,9 +12,9 @@ namespace Shelf.Core.Requests.Categories
 
         [Required(ErrorMessage = "Titulo inválido.")]
         [MaxLength(80, ErrorMessage = "O titulo deve conter, no máximo, 80 caracteres.")]
-        public string Title = string.Empty;
+        public string Title { get; set; }  = string.Empty;
 
         [Required(ErrorMessage = "Descrição inválida.")]
-        public string Description = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }
